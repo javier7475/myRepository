@@ -164,33 +164,6 @@ Just run "SchedulerTest" as Junit Test in the Eclipse environment.
 Building
 ========
 
-An eclipse project is provided.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+An eclipse project is provided. Required libraries are also provided. "JRE System Library [JavaSE-1.8]" must be configured in the build path. 
 
 
