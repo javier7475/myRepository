@@ -18,7 +18,7 @@ message 3 is received by the scheduler
 message 3 should no be sent to the gateway as there are no free resources
 
 To be simple, I will use a variable to count the number or free resources. The initial value of this variable should be "1" as we suppose the resource if free before start working. 
-When a message is sent to the gateway, there is one less free resource. When a message finishes there is on more free resource. I create two methods, "getAvailableResource" and "addAvailableResource". They must be synchronized for preventing thread interference.
+When a message is sent to the gateway, there is one less free resource. When a message finishes there is on more free resource. I created two methods, "getAvailableResource" and "addAvailableResource". They must be synchronized for preventing thread interference.
 When a message finishes the scheduler should be notified to increase the number of available resources. So the message "completed()" method will call the "completed()" method of the scheduler so I will add a "scheduler" field in the message for this purpose. When a message is dispatched by the scheduler, this field must be set.
 To run the test, the "dispatch" and "completed" method of the scheduler return the message sent to the queue or "null" otherwise.
 
@@ -69,7 +69,6 @@ message 1 finishes
 message 3 should be sent to the gateway as belongs to group 2 that has already started and message groups should not be interleaved
 message 3 finishes
 message 2 should be sent to the gateway  as it must be the first in the queue
-message 3 finishes
 message 2 finishes
 
 I added a "groupId" to the "MessageExample" class to run this test.
@@ -120,7 +119,7 @@ message 4 should be sent to the gateway
 
 This test fail as i am not taking into account group priority.
 I need to know the order of each group. I will use a HashMap indexed by groupId to be efficient. I will use the HashMap I already had and I will save the group order.
-But messages should be processed based on its group priority. So I will have a queue of groups rather than a queue o messages to be more efficient. Each group should have a queue of messages waiting to be processed. So when I queue message, I append it to its group queue and if the group is not queued I will queue it.
+But messages should be processed based on its group priority. So I will have a queue of groups rather than a queue of messages to be more efficient. Each group should have a queue of messages waiting to be processed. So when I queue message, I append it to its group queue and if the group is not queued I will queue it.
 To get next message from the queue, I will get the first message from the first group of the queue. If there are no more messages in the group's queue, I will remove the group from the group's queue.
 Group's queue should be ordered by group's order so I made a GroupInfo class to allocate both group's order and group's queued messages. To allocate group's queue I must use a sorted structure like TreeSet. GroupInfo implements a compareTo method to compare two GroupInfo based on its order.
 
